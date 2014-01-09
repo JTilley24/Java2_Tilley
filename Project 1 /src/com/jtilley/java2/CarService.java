@@ -5,11 +5,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.concurrent.ExecutionException;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.app.IntentService;
 import android.content.Intent;
@@ -20,6 +15,7 @@ import android.os.RemoteException;
 import android.util.Log;
 
 public class CarService extends IntentService{
+	
 	public String responseString = "";
 	public String urlString = "https://api.edmunds.com/api/vehicle/v2/makes?state=new&year=2014&view=full&fmt=json&api_key=saw2xy7wdxjqfueuxkv5hm8w";
 	JSONstorage storage;
@@ -37,7 +33,7 @@ public class CarService extends IntentService{
 		//Log.i("JSON", results);
 		storage.writeStringFile(this, "cars_json", results);
 		
-		Log.i("JSON DATA", storage.readStringFile(this, "cars_json"));
+		//Log.i("JSON DATA", storage.readStringFile(this, "cars_json"));
 		
 		boolean flag = true;
 		Messenger messenger = (Messenger) intent.getExtras().get("messenger");
