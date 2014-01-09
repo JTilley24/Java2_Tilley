@@ -22,6 +22,8 @@ import android.util.Log;
 public class CarService extends IntentService{
 	public String responseString = "";
 	public String urlString = "https://api.edmunds.com/api/vehicle/v2/makes?state=new&year=2014&view=full&fmt=json&api_key=saw2xy7wdxjqfueuxkv5hm8w";
+	JSONstorage storage;
+	
 	public CarService(){
 		super("CarService");
 	}
@@ -29,7 +31,13 @@ public class CarService extends IntentService{
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		// TODO Auto-generated method stub
-		String[] results = getJSON(urlString);
+		String results = getJSON(urlString);
+		
+		storage = JSONstorage.getInstance(); 
+		//Log.i("JSON", results);
+		storage.writeStringFile(this, "cars_json", results);
+		
+		Log.i("JSON DATA", storage.readStringFile(this, "cars_json"));
 		
 		boolean flag = true;
 		Messenger messenger = (Messenger) intent.getExtras().get("messenger");
@@ -45,11 +53,11 @@ public class CarService extends IntentService{
 		
 	}
 	
-	public String[] getJSON(String urlString){
-		String[] carObject = new String[] {responseString};
+	public String getJSON(String urlString){
 		try {
 		getData data = new getData();
 		responseString = data.execute(urlString).get();
+		//Log.i("JSON DATA", responseString);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -57,7 +65,7 @@ public class CarService extends IntentService{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return carObject;
+		return responseString;
 		
 	}
 	
