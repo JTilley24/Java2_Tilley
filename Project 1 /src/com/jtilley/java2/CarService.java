@@ -1,4 +1,8 @@
 package com.jtilley.java2;
+//Justin Tilley 
+//Java 2
+//Project 1
+
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -13,9 +17,8 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
-
 public class CarService extends IntentService{
-	
+
 	public String responseString = "";
 	public String urlString = "https://api.edmunds.com/api/vehicle/v2/makes?state=new&year=2014&view=full&fmt=json&api_key=saw2xy7wdxjqfueuxkv5hm8w";
 	JSONstorage storage;
@@ -29,17 +32,21 @@ public class CarService extends IntentService{
 		// TODO Auto-generated method stub
 		String results = getJSON(urlString);
 		
-		storage = JSONstorage.getInstance(); 
-		//Log.i("JSON", results);
-		storage.writeStringFile(this, "cars_json", results);
-		
-		//Log.i("JSON DATA", storage.readStringFile(this, "cars_json"));
+		//Check for Connection
+		if(results.equals("Not Connected")){
+			Log.i("CONNECT", "No Connection");
+		}else{
+			//Save JSON Data to Internal Storage
+			storage = JSONstorage.getInstance();
+			storage.writeStringFile(this, "cars_json", results);
+		}
 		
 		boolean flag = true;
 		Messenger messenger = (Messenger) intent.getExtras().get("messenger");
 		Message message = Message.obtain();
 		message.arg1 = Activity.RESULT_OK;
 		message.obj = flag;
+		
 		try{
 			messenger.send(message);
 		} catch(RemoteException e){
@@ -51,9 +58,8 @@ public class CarService extends IntentService{
 	
 	public String getJSON(String urlString){
 		try {
-		getData data = new getData();
-		responseString = data.execute(urlString).get();
-		//Log.i("JSON DATA", responseString);
+			getData data = new getData();
+			responseString = data.execute(urlString).get();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -81,7 +87,7 @@ public class CarService extends IntentService{
 			}
 			response = responseBuffer.toString();
 		} catch (IOException e) {
-			response = "No info \n" + e;
+			response = "Not Connected";
 			e.printStackTrace();
 		}
 		

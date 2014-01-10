@@ -1,4 +1,8 @@
 package com.jtilley.java2;
+//Justin Tilley 
+//Java 2
+//Project 1
+
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -21,7 +25,7 @@ public class JSONstorage {
 		}
 		return m_instance;
 	}
-	
+	//Save Data to Internal Storage
 	public Boolean writeStringFile (Context context, String filename, String content){
 		Boolean result = false;
 		
@@ -37,7 +41,7 @@ public class JSONstorage {
 		
 		return result;
 	} 
-	
+	//Access Data from Internal Storage
 	public String readStringFile(Context context, String filename){
 		String content = "";
 		

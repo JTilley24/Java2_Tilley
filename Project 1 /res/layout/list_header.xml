@@ -7,7 +7,7 @@
     
     <TextView
         android:id="@+id/makes_header"
-        android:text="Make"
+        android:text="@string/make_header"
         android:textStyle="bold"
         android:layout_weight="2"
         android:layout_width="0dip"
@@ -15,7 +15,7 @@
         android:paddingLeft="5dp"/>
     <TextView
         android:id="@+id/models_header"
-        android:text="Models Count"
+        android:text="@string/models_header"
         android:textStyle="bold"
         android:layout_weight="1"
         android:layout_width="0dip"

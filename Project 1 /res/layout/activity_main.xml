@@ -15,5 +15,5 @@
         android:divider="#ffffff"
         android:drawSelectorOnTop="false"
         />
-    
+        
 </RelativeLayout>
