@@ -59,6 +59,7 @@ public class JSONstorage {
 				 contentBuffer.append(content);
 			 }
 			 content = contentBuffer.toString();
+			 Log.i("READ STRING", "success");
 		}catch(Exception e){
 			
 		}finally {

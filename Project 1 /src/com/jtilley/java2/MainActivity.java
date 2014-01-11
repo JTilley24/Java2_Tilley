@@ -11,6 +11,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,6 +20,7 @@ import android.os.Messenger;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ListView;
@@ -50,21 +53,11 @@ public class MainActivity extends Activity {
 				// TODO Auto-generated method stub
 				Object returnedObject = msg.obj;
 				
+				//Access JSON Data from Internal Storage
+				storage = JSONstorage.getInstance();
+				String JSONString = storage.readStringFile(mContext, "cars_json");
+				
 				if(msg.arg1 == RESULT_OK && returnedObject != null){
-					//Access JSON Data from Internal Storage
-					storage = JSONstorage.getInstance();
-					String JSONString = storage.readStringFile(mContext, "cars_json");
-					
-					//Check for Connection and Data
-					CarService service = new CarService();
-					String results = service.getJSON(urlString);
-					if(results.equals("Not Connected")){
-						if(JSONString.length() == 0){
-							Toast.makeText(mContext, "No Data to display!", Toast.LENGTH_LONG).show();
-						}else{
-							Toast.makeText(mContext, "Not Connected to a Network. Displaying previous data!", Toast.LENGTH_LONG).show();
-						}
-					}
 					//Display Data in ListView
 					displayCars(JSONString);	
 				}
@@ -73,13 +66,30 @@ public class MainActivity extends Activity {
 			}
 		};
 		
-		Messenger serviceMessenger = new Messenger(carsHandler);
+		//Check for Network Connection
+		if(checkConnection(mContext)){
+			//Start Service
+			Messenger serviceMessenger = new Messenger(carsHandler);
+			
+			Intent carServiceIntent = new Intent(this, CarService.class);
+			carServiceIntent.putExtra("messenger", serviceMessenger);
+			carServiceIntent.putExtra(CarService.REQUEST_KEY, urlString);
+			startService(carServiceIntent);
+			
+			Toast.makeText(mContext, "Gathering Data", Toast.LENGTH_LONG).show();
+		}else{
+			storage = JSONstorage.getInstance();
+			String JSONString = storage.readStringFile(mContext, "cars_json");
+			if(JSONString.length() > 0){
+				//Not Connected to Network and JSON Saved to Device
+				Toast.makeText(mContext, "Not Connected to a Network. Displaying previous data!", Toast.LENGTH_LONG).show();
+				displayCars(JSONString);
+			}else{
+				//No Connection or Data
+				Toast.makeText(mContext, "No Data to display! Please Connect to Network and Try Again.", Toast.LENGTH_LONG).show();
+			}
+		}
 		
-		Intent carServiceIntent = new Intent(this, CarService.class);
-		carServiceIntent.putExtra("messenger", serviceMessenger);
-		startService(carServiceIntent);
-		
-		Toast.makeText(mContext, "Gathering Data", Toast.LENGTH_LONG).show();
 ;	}
 
 	@Override
@@ -97,6 +107,7 @@ public class MainActivity extends Activity {
 			try{
 				jObject = new JSONObject(JSONString);
 				JSONArray makes = jObject.getJSONArray("makes");
+				
 				int makesSize = makes.length();
 				
 				for(int i = 0; i < makesSize; i++)
@@ -115,6 +126,7 @@ public class MainActivity extends Activity {
 					makeList.add(makeMap);
 				}
 				
+
 				//Add JSON Data to ListView
 				SimpleAdapter listAdapter = new SimpleAdapter(this, makeList, R.layout.list_row,
 						new String[] {"name", "count"}, new int[] {R.id.makes, R.id.models});
@@ -123,5 +135,18 @@ public class MainActivity extends Activity {
 			}catch (JSONException e){
 				e.printStackTrace();
 			}
+	}
+	
+	public Boolean checkConnection(Context context){
+		Boolean connect = false;
+		ConnectivityManager cManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo network = cManager.getActiveNetworkInfo();
+		if(network != null){
+			if(network.isConnected()){
+				Log.i("NETWORK", network.getTypeName());
+				connect = true;
+			}
+		}
+		return connect;
 	}
 }
