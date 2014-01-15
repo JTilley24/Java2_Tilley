@@ -23,6 +23,8 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -101,7 +103,7 @@ public class MainActivity extends Activity {
 	
 	public void displayCars(String JSONString)
 	{
-			ArrayList<HashMap<String, String>> makeList = new ArrayList<HashMap<String, String>>();
+			ArrayList<HashMap<String, Object>> makeList = new ArrayList<HashMap<String, Object>>();
 			JSONObject jObject = null;
 			//Parse JSON Data
 			try{
@@ -118,9 +120,16 @@ public class MainActivity extends Activity {
 					JSONArray models = makeObject.getJSONArray("models");
 					int modelsNumber = models.length();
 					String modelsAmount = Integer.toString(modelsNumber);
-					
-					HashMap<String, String> makeMap = new HashMap<String, String>();
+					ArrayList<Object> modelsList = new ArrayList<Object>();
+					if(models != null){
+						for(int n = 0;n < modelsNumber; n++){
+							modelsList.add(models.get(n).toString());
+						}
+					}
+					HashMap<String, Object> makeMap = new HashMap<String, Object>();
+					Log.i("MAKE", makeName);
 					makeMap.put("name", makeName);
+					makeMap.put("models", modelsList);
 					makeMap.put("count", modelsAmount);
 					
 					makeList.add(makeMap);
@@ -132,10 +141,26 @@ public class MainActivity extends Activity {
 						new String[] {"name", "count"}, new int[] {R.id.makes, R.id.models});
 				list.setAdapter(listAdapter);
 				
+				list.setOnItemClickListener(new OnItemClickListener() {
+					@SuppressWarnings("unchecked")
+					public void onItemClick(AdapterView<?> makeListItem, View view, int position, long row){
+						HashMap<String, Object> makeList = (HashMap<String, Object>)makeListItem.getItemAtPosition(position);
+						String modelsItem = makeList.get("models").toString();
+						String makeItem = makeList.get("name").toString();
+						
+						Intent secondActivity = new Intent(mContext, SecondActivity.class);
+						secondActivity.putExtra("MAKE_KEY", makeItem);
+						startActivity(secondActivity);
+						
+					}
+				});
+				
 			}catch (JSONException e){
 				e.printStackTrace();
 			}
 	}
+	
+	
 	
 	public Boolean checkConnection(Context context){
 		Boolean connect = false;
