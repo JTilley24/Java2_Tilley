@@ -105,7 +105,7 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				String searchInput = searchField.getText().toString();
-				Log.i("FILTER", searchInput);
+				//Log.i("FILTER", searchInput);
 				list.setFilterText(searchInput);
 			}
 		});

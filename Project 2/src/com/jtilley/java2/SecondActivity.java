@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import android.widget.ListView;
 public class SecondActivity extends Activity {
 	public String make;
 	ListView modelView;
+	ArrayList<String> modelList = new ArrayList<String>();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,7 @@ public class SecondActivity extends Activity {
 	}
 
 	public void displayModels(String modelsJSON){
-		ArrayList<String> modelList = new ArrayList<String>();
+		//ArrayList<String> modelList = new ArrayList<String>();
 		
 		try {
 			JSONArray jsonArray = new JSONArray(modelsJSON);
@@ -70,7 +72,11 @@ public class SecondActivity extends Activity {
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
 					// TODO Auto-generated method stub
-					
+					String model = modelList.get(position).toString();
+					String modelURL = model.replaceAll(" ", "+");
+					Log.i("SELECTED", modelURL);
+					Intent google = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/#q=" + modelURL));
+					startActivity(google);
 					
 				}
 				
