@@ -34,6 +34,9 @@
         <activity
             android:name="com.jtilley.java2.SecondActivity"
             android:label="@string/title_activity_second" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
         </activity>
     </application>
 

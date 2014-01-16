@@ -17,18 +17,18 @@
         android:inputType="text"
         />
     <Button
-        android:id="@+id/filter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/filterButton"
-        android:layout_gravity="center"
-        />
-    
-    <Button 
         android:id="@+id/query"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/queryButton"
+        android:layout_gravity="center"
+        />
+    
+    <Button 
+        android:id="@+id/filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/filterButton"
         android:layout_gravity="center"
         />
     

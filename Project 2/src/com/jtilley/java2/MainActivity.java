@@ -23,30 +23,38 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	Context mContext;
 	ListView list;
 	JSONstorage storage;
+	public ArrayList<HashMap<String, Object>> makeList = new ArrayList<HashMap<String, Object>>();
 	public String urlString = "https://api.edmunds.com/api/vehicle/v2/makes?state=new&year=2014&view=full&fmt=json&api_key=saw2xy7wdxjqfueuxkv5hm8w";
-		
+	public SimpleAdapter listAdapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		mContext = this;
+		final TextView searchField = (TextView) this.findViewById(R.id.search);
+		final Button filterButton = (Button) this.findViewById(R.id.filter);
+		final Button queryButton = (Button) this.findViewById(R.id.query);
 		
 		
 		//Create ListView Headers
 		list = (ListView) this.findViewById(R.id.list);
 		View listHeader = this.getLayoutInflater().inflate(R.layout.list_header, null);
 		list.addHeaderView(listHeader);
+		list.setTextFilterEnabled(true);
 		
 		
 		final Handler carsHandler = new Handler(){
@@ -92,6 +100,27 @@ public class MainActivity extends Activity {
 			}
 		}
 		
+		filterButton.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				String searchInput = searchField.getText().toString();
+				Log.i("FILTER", searchInput);
+				list.setFilterText(searchInput);
+			}
+		});
+		
+		queryButton.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				list.clearTextFilter();
+				storage = JSONstorage.getInstance();
+				String JSONString = storage.readStringFile(mContext, "cars_json");
+				displayCars(JSONString);
+			}
+		})
+		
 ;	}
 
 	@Override
@@ -103,7 +132,7 @@ public class MainActivity extends Activity {
 	
 	public void displayCars(String JSONString)
 	{
-			ArrayList<HashMap<String, Object>> makeList = new ArrayList<HashMap<String, Object>>();
+			//ArrayList<HashMap<String, Object>> makeList = new ArrayList<HashMap<String, Object>>();
 			JSONObject jObject = null;
 			//Parse JSON Data
 			try{
@@ -150,6 +179,7 @@ public class MainActivity extends Activity {
 						
 						Intent secondActivity = new Intent(mContext, SecondActivity.class);
 						secondActivity.putExtra("MAKE_KEY", makeItem);
+						secondActivity.putExtra("MODELS_KEY", modelsItem);
 						startActivity(secondActivity);
 						
 					}
