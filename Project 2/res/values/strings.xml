@@ -9,5 +9,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="queryButton">Query All</string>
     <string name="filterButton">Filter Results</string>
+    <string name="title">New Car Listings</string>
+    <string name="input">Enter Make of Vehicle</string>
+    <string name="second">Select Available Models</string>
 
 </resources>

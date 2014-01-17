@@ -10,12 +10,14 @@
         android:layout_weight="2"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
+        android:textSize="18sp"
         android:paddingLeft="5dp" />
     <TextView
         android:id="@+id/models"
         android:layout_weight="1"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
+        android:textSize="18sp"
         android:paddingLeft="5dp" />
     
 

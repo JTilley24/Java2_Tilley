@@ -1,4 +1,7 @@
 package com.jtilley.java2;
+//Justin Tilley 
+//Java 2
+//Project 2
 
 import java.util.ArrayList;
 
@@ -29,7 +32,7 @@ public class SecondActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_second);
 		
-		
+		//Retrieve Data sent from Main Activity
 		Intent intent = this.getIntent();
 		make = intent.getStringExtra("MAKE_KEY");
 		String models = intent.getStringExtra("MODELS_KEY").toString();
@@ -47,13 +50,12 @@ public class SecondActivity extends Activity {
 	}
 
 	public void displayModels(String modelsJSON){
-		//ArrayList<String> modelList = new ArrayList<String>();
 		
 		try {
+			//Parse Selected Object
 			JSONArray jsonArray = new JSONArray(modelsJSON);
 			for(int i=0; i< jsonArray.length(); i++){
 				JSONObject modelsObj = jsonArray.getJSONObject(i);
-				//Log.i("MODELS", modelsObj.toString());
 				String modelName = modelsObj.getString("name");
 				
 				String tempString = new String(make + " " + modelName);
@@ -61,14 +63,12 @@ public class SecondActivity extends Activity {
 				modelList.add(tempString);
 			}
 			
-			Log.i("MODEL_ARRAY", modelList.toString());
-			
 			ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, modelList);
 			
 			modelView.setAdapter(listAdapter);
 			
 			modelView.setOnItemClickListener(new OnItemClickListener() {
-
+				//Open Google Search for Selected Item
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
@@ -90,7 +90,7 @@ public class SecondActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
-	
+	//Sent Previous Selection back to Main Activity
 	@Override
 	public void finish(){
 		Intent data = new Intent();

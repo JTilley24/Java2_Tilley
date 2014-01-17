@@ -1,7 +1,7 @@
 package com.jtilley.java2;
 //Justin Tilley 
 //Java 2
-//Project 1
+//Project 2
 
 
 import java.io.BufferedReader;

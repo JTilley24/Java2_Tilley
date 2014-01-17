@@ -1,8 +1,7 @@
 package com.jtilley.java2;
 //Justin Tilley 
 //Java 2
-//Project 1
-
+//Project 2
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -105,17 +104,18 @@ public class MainActivity extends Activity {
 			}
 		}
 		
+		//Filter ListView from User Input
 		filterButton.setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				String searchInput = searchField.getText().toString();
-				//Log.i("FILTER", searchInput);
 				savedString = searchInput;
 				list.setFilterText(searchInput);
 			}
 		});
 		
+		//Display All Data in ListView
 		queryButton.setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View v) {
@@ -139,7 +139,6 @@ public class MainActivity extends Activity {
 	
 	public void displayCars(String JSONString)
 	{
-			//ArrayList<HashMap<String, Object>> makeList = new ArrayList<HashMap<String, Object>>();
 			JSONObject jObject = null;
 			//Parse JSON Data
 			try{
@@ -163,7 +162,6 @@ public class MainActivity extends Activity {
 						}
 					}
 					HashMap<String, Object> makeMap = new HashMap<String, Object>();
-					Log.i("MAKE", makeName);
 					makeMap.put("name", makeName);
 					makeMap.put("models", modelsList);
 					makeMap.put("count", modelsAmount);
@@ -178,6 +176,7 @@ public class MainActivity extends Activity {
 						new String[] {"name", "count"}, new int[] {R.id.makes, R.id.models});
 				list.setAdapter(listAdapter);
 				
+				//Select Item and Send Data to Second Activity
 				list.setOnItemClickListener(new OnItemClickListener() {
 					@SuppressWarnings("unchecked")
 					public void onItemClick(AdapterView<?> makeListItem, View view, int position, long row){
@@ -193,9 +192,9 @@ public class MainActivity extends Activity {
 					}
 				});
 				
+				//Check for SavedInstanceState
 				if(savedString != null){
 					list.setFilterText(savedString);
-					
 				}
 				
 				
@@ -204,6 +203,7 @@ public class MainActivity extends Activity {
 			}
 	}
 	
+	//Save User Input and Last Searched
 	protected void onSaveInstanceState(Bundle outState){
 		super.onSaveInstanceState(outState);
 		String inputString = (String) searchField.getText().toString();
@@ -215,6 +215,7 @@ public class MainActivity extends Activity {
 	
 	}
 	
+	//Restore the SavedInstanceState and Display User's Previous Input
 	public void onRestoreInstanceState(Bundle savedInstanceState){
 		super.onRestoreInstanceState(savedInstanceState);
 		String input = savedInstanceState.getString("input");
@@ -237,6 +238,7 @@ public class MainActivity extends Activity {
 		return connect;
 	}
 	
+	//Return Data from Second Activity
 	@Override
 	protected void onActivityResult(int requestCode, int resultsCode, Intent data){
 		if(resultsCode == RESULT_OK && requestCode == 0){
