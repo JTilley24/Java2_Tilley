@@ -35,19 +35,24 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 	Context mContext;
 	ListView list;
+	TextView searchField;
 	JSONstorage storage;
 	public ArrayList<HashMap<String, Object>> makeList = new ArrayList<HashMap<String, Object>>();
 	public String urlString = "https://api.edmunds.com/api/vehicle/v2/makes?state=new&year=2014&view=full&fmt=json&api_key=saw2xy7wdxjqfueuxkv5hm8w";
 	public SimpleAdapter listAdapter;
+	public Bundle savedInstanceState;
+	public String savedString;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.activity_main);
 		mContext = this;
-		final TextView searchField = (TextView) this.findViewById(R.id.search);
+		searchField = (TextView) this.findViewById(R.id.search);
 		final Button filterButton = (Button) this.findViewById(R.id.filter);
 		final Button queryButton = (Button) this.findViewById(R.id.query);
+		
 		
 		
 		//Create ListView Headers
@@ -106,6 +111,7 @@ public class MainActivity extends Activity {
 				// TODO Auto-generated method stub
 				String searchInput = searchField.getText().toString();
 				//Log.i("FILTER", searchInput);
+				savedString = searchInput;
 				list.setFilterText(searchInput);
 			}
 		});
@@ -115,6 +121,7 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				list.clearTextFilter();
+				savedString = null;
 				storage = JSONstorage.getInstance();
 				String JSONString = storage.readStringFile(mContext, "cars_json");
 				displayCars(JSONString);
@@ -164,7 +171,8 @@ public class MainActivity extends Activity {
 					makeList.add(makeMap);
 				}
 				
-
+				
+				
 				//Add JSON Data to ListView
 				SimpleAdapter listAdapter = new SimpleAdapter(this, makeList, R.layout.list_row,
 						new String[] {"name", "count"}, new int[] {R.id.makes, R.id.models});
@@ -180,17 +188,41 @@ public class MainActivity extends Activity {
 						Intent secondActivity = new Intent(mContext, SecondActivity.class);
 						secondActivity.putExtra("MAKE_KEY", makeItem);
 						secondActivity.putExtra("MODELS_KEY", modelsItem);
-						startActivity(secondActivity);
+						startActivityForResult(secondActivity, 0);
 						
 					}
 				});
+				
+				if(savedString != null){
+					list.setFilterText(savedString);
+					
+				}
+				
 				
 			}catch (JSONException e){
 				e.printStackTrace();
 			}
 	}
 	
+	protected void onSaveInstanceState(Bundle outState){
+		super.onSaveInstanceState(outState);
+		String inputString = (String) searchField.getText().toString();
+		outState.putString("input", inputString);
+		if(savedString != null){
+			outState.putString("saved", savedString);
+		}
+		Log.i("MAIN", "Saving Instance State");
 	
+	}
+	
+	public void onRestoreInstanceState(Bundle savedInstanceState){
+		super.onRestoreInstanceState(savedInstanceState);
+		String input = savedInstanceState.getString("input");
+		savedString = savedInstanceState.getString("saved");
+		searchField.setText(input);
+		
+		Log.i("MAIN", "Restoring Saved State");
+	}
 	
 	public Boolean checkConnection(Context context){
 		Boolean connect = false;
@@ -204,4 +236,17 @@ public class MainActivity extends Activity {
 		}
 		return connect;
 	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultsCode, Intent data){
+		if(resultsCode == RESULT_OK && requestCode == 0){
+			Bundle result = data.getExtras();
+			String model = result.getString("model");
+			if(model != null){
+				Toast.makeText(mContext, "Previously Selected: " + model, Toast.LENGTH_LONG).show();
+			}
+		}
+	}
 }
+
+

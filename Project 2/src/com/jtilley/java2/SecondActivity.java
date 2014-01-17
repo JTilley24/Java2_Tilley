@@ -20,6 +20,7 @@ import android.widget.ListView;
 
 public class SecondActivity extends Activity {
 	public String make;
+	public String model;
 	ListView modelView;
 	ArrayList<String> modelList = new ArrayList<String>();
 	
@@ -72,7 +73,7 @@ public class SecondActivity extends Activity {
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
 					// TODO Auto-generated method stub
-					String model = modelList.get(position).toString();
+					model = modelList.get(position).toString();
 					String modelURL = model.replaceAll(" ", "+");
 					Log.i("SELECTED", modelURL);
 					Intent google = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/#q=" + modelURL));
@@ -88,5 +89,13 @@ public class SecondActivity extends Activity {
 			Log.i("MODELS_RESULTS", e.getMessage().toString());
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void finish(){
+		Intent data = new Intent();
+		data.putExtra("model", model);
+		setResult(RESULT_OK, data);
+		super.finish();
 	}
 }
