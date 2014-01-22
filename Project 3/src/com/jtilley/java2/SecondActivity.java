@@ -63,9 +63,9 @@ public class SecondActivity extends Activity {
 				modelList.add(tempString);
 			}
 			
-			ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, modelList);
+			ArrayAdapter<String> modelsListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, modelList);
 			
-			modelView.setAdapter(listAdapter);
+			modelView.setAdapter(modelsListAdapter);
 			
 			modelView.setOnItemClickListener(new OnItemClickListener() {
 				//Open Google Search for Selected Item

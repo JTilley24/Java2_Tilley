@@ -31,10 +31,8 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements MainActivityFragment.onListItemClicked {
 	Context mContext;
-	ListView list;
-	TextView searchField;
 	JSONstorage storage;
 	public ArrayList<HashMap<String, Object>> makeList = new ArrayList<HashMap<String, Object>>();
 	public String urlString = "https://api.edmunds.com/api/vehicle/v2/makes?state=new&year=2014&view=full&fmt=json&api_key=saw2xy7wdxjqfueuxkv5hm8w";
@@ -46,9 +44,9 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.main_fragment);
 		mContext = this;
-		searchField = (TextView) this.findViewById(R.id.search);
+		/*searchField = (TextView) this.findViewById(R.id.search);
 		final Button filterButton = (Button) this.findViewById(R.id.filter);
 		final Button queryButton = (Button) this.findViewById(R.id.query);
 		
@@ -58,7 +56,7 @@ public class MainActivity extends Activity {
 		list = (ListView) this.findViewById(R.id.list);
 		View listHeader = this.getLayoutInflater().inflate(R.layout.list_header, null);
 		list.addHeaderView(listHeader);
-		list.setTextFilterEnabled(true);
+		list.setTextFilterEnabled(true);*/
 		
 		
 		final Handler carsHandler = new Handler(){
@@ -73,7 +71,7 @@ public class MainActivity extends Activity {
 				
 				if(msg.arg1 == RESULT_OK && returnedObject != null){
 					//Display Data in ListView
-					displayCars(JSONString);	
+					getJSONCars(JSONString);	
 				}
 				
 				super.handleMessage(msg);
@@ -97,13 +95,15 @@ public class MainActivity extends Activity {
 			if(JSONString.length() > 0){
 				//Not Connected to Network and JSON Saved to Device
 				Toast.makeText(mContext, "Not Connected to a Network. Displaying previous data!", Toast.LENGTH_LONG).show();
-				displayCars(JSONString);
+				
+				getJSONCars(JSONString);
 			}else{
 				//No Connection or Data
 				Toast.makeText(mContext, "No Data to display! Please Connect to Network and Try Again.", Toast.LENGTH_LONG).show();
 			}
 		}
-		
+	
+		/*
 		//Filter ListView from User Input
 		filterButton.setOnClickListener(new OnClickListener() {
 			
@@ -124,9 +124,9 @@ public class MainActivity extends Activity {
 				savedString = null;
 				storage = JSONstorage.getInstance();
 				String JSONString = storage.readStringFile(mContext, "cars_json");
-				displayCars(JSONString);
+				getJSONCars(JSONString);
 			}
-		})
+		})*/
 		
 ;	}
 
@@ -137,7 +137,7 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
-	public void displayCars(String JSONString)
+	public ArrayList<HashMap<String, Object>> getJSONCars(String JSONString)
 	{
 			JSONObject jObject = null;
 			//Parse JSON Data
@@ -170,7 +170,7 @@ public class MainActivity extends Activity {
 				}
 				
 				
-				
+				/*
 				//Add JSON Data to ListView
 				SimpleAdapter listAdapter = new SimpleAdapter(this, makeList, R.layout.list_row,
 						new String[] {"name", "count"}, new int[] {R.id.makes, R.id.models});
@@ -184,6 +184,8 @@ public class MainActivity extends Activity {
 						String modelsItem = makeList.get("models").toString();
 						String makeItem = makeList.get("name").toString();
 						
+						startSecondActivity(makeItem, modelsItem);
+						
 						Intent secondActivity = new Intent(mContext, SecondActivity.class);
 						secondActivity.putExtra("MAKE_KEY", makeItem);
 						secondActivity.putExtra("MODELS_KEY", modelsItem);
@@ -195,14 +197,24 @@ public class MainActivity extends Activity {
 				//Check for SavedInstanceState
 				if(savedString != null){
 					list.setFilterText(savedString);
-				}
+				}*/
 				
 				
 			}catch (JSONException e){
 				e.printStackTrace();
 			}
+			return makeList;
 	}
 	
+	
+	
+	public void startSecondActivity(String makeItem, String modelsItem){
+		Intent secondActivity = new Intent(mContext, SecondActivity.class);
+		secondActivity.putExtra("MAKE_KEY", makeItem);
+		secondActivity.putExtra("MODELS_KEY", modelsItem);
+		startActivityForResult(secondActivity, 0);
+	}
+	/*
 	//Save User Input and Last Searched
 	protected void onSaveInstanceState(Bundle outState){
 		super.onSaveInstanceState(outState);
@@ -224,7 +236,7 @@ public class MainActivity extends Activity {
 		
 		Log.i("MAIN", "Restoring Saved State");
 	}
-	
+	*/
 	public Boolean checkConnection(Context context){
 		Boolean connect = false;
 		ConnectivityManager cManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
