@@ -24,7 +24,7 @@ import android.view.Menu;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements MainActivityFragment.OnListItemClicked {
+public class MainActivity extends Activity implements MainActivityFragment.OnListItemClicked,SecondActivityFragment.onModelSelected {
 	Context mContext;
 	JSONstorage storage;
 	public ArrayList<HashMap<String, Object>> makeList = new ArrayList<HashMap<String, Object>>();
@@ -210,6 +210,12 @@ public class MainActivity extends Activity implements MainActivityFragment.OnLis
 		{
 			startSecondActivity(makeItem, modelsItem);
 		}
+	}
+
+	@Override
+	public void googleSearch(String modelURL) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	/*//Return Data from Second Activity

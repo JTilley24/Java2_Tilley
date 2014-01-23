@@ -27,21 +27,21 @@ public class SecondActivity extends Activity implements SecondActivityFragment.o
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.second_fragment);
 		
 		if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
 		{
 			finish();
 		}
-		setContentView(R.layout.second_fragment);
 		
-		//Retrieve Data sent from Main Activity
-		Intent intent = this.getIntent();
-		make = intent.getStringExtra("MAKE_KEY");
-		String models = intent.getStringExtra("MODELS_KEY").toString();
+			//Retrieve Data sent from Main Activity
+			Intent intent = this.getIntent();
+			make = intent.getStringExtra("MAKE_KEY");
+			String models = intent.getStringExtra("MODELS_KEY").toString();
+			
+			getModels(models);
 		
-		//modelView = (ListView) this.findViewById(R.id.models);
 		
-		getModels(models);
 	}
 
 	@Override

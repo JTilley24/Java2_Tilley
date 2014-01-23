@@ -20,6 +20,16 @@
 	    android:paddingBottom="10dp"
 	    android:background="#00CCFF"
 	    />
+	<TextView
+	    android:id="@+id/select"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/select"
+	    android:gravity="center"
+	    android:textSize="25sp"
+	    android:textStyle="bold"
+	    android:padding="20dp"
+	    />
      <ListView
         android:id="@+id/models"
         android:layout_width="fill_parent"
