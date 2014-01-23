@@ -13,15 +13,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class SecondActivity extends Activity {
+public class SecondActivity extends Activity implements SecondActivityFragment.onModelSelected {
 	public String make;
 	public String model;
 	ListView modelView;
@@ -30,16 +27,21 @@ public class SecondActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_second);
+		
+		if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+		{
+			finish();
+		}
+		setContentView(R.layout.second_fragment);
 		
 		//Retrieve Data sent from Main Activity
 		Intent intent = this.getIntent();
 		make = intent.getStringExtra("MAKE_KEY");
 		String models = intent.getStringExtra("MODELS_KEY").toString();
 		
-		modelView = (ListView) this.findViewById(R.id.models);
+		//modelView = (ListView) this.findViewById(R.id.models);
 		
-		displayModels(models);
+		getModels(models);
 	}
 
 	@Override
@@ -49,7 +51,7 @@ public class SecondActivity extends Activity {
 		return true;
 	}
 
-	public void displayModels(String modelsJSON){
+	public void getModels(String modelsJSON){
 		
 		try {
 			//Parse Selected Object
@@ -63,7 +65,10 @@ public class SecondActivity extends Activity {
 				modelList.add(tempString);
 			}
 			
-			ArrayAdapter<String> modelsListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, modelList);
+			SecondActivityFragment fragment2 = (SecondActivityFragment)getFragmentManager().findFragmentById(R.id.second_fragment);
+			fragment2.displayModels(modelList);
+			
+			/*ArrayAdapter<String> modelsListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, modelList);
 			
 			modelView.setAdapter(modelsListAdapter);
 			
@@ -82,7 +87,7 @@ public class SecondActivity extends Activity {
 				}
 				
 				
-			});
+			});*/
 			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -90,12 +95,18 @@ public class SecondActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
+	
+	public void googleSearch(String modelURL){
+		Intent google = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/#q=" + modelURL));
+		startActivity(google);
+	}
+	
 	//Sent Previous Selection back to Main Activity
-	@Override
+	/*@Override
 	public void finish(){
 		Intent data = new Intent();
 		data.putExtra("model", model);
 		setResult(RESULT_OK, data);
 		super.finish();
-	}
+	}*/
 }

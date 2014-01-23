@@ -5,17 +5,13 @@ import java.util.HashMap;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.Filter;
-import android.widget.Filter.FilterListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -32,12 +28,12 @@ public class MainActivityFragment extends Fragment{
 	public ArrayList<HashMap<String, Object>> makeList;
 	SimpleAdapter listAdapter;
 	
-	public interface onListItemClicked{
-		void startSecondActivity(String makeItem, String modelsItem);
+	public interface OnListItemClicked{
+		void onListItemClicked(String makeItem, String modelsItem);
 		ArrayList<HashMap<String, Object>> getJSONCars(String JSONString);
 	}
 	
-	private onListItemClicked parentActivity;
+	private OnListItemClicked parentActivity;
 	
 	
 	@Override
@@ -45,8 +41,8 @@ public class MainActivityFragment extends Fragment{
 		// TODO Auto-generated method stub
 		super.onAttach(activity);
 		
-		if(activity instanceof onListItemClicked) {
-			parentActivity = (onListItemClicked) activity;
+		if(activity instanceof OnListItemClicked) {
+			parentActivity = (OnListItemClicked) activity;
 		}
 		else{
 			throw new ClassCastException(activity.toString() + "must implement onListItemClicked");
@@ -117,12 +113,8 @@ public class MainActivityFragment extends Fragment{
 				String modelsItem = makeList.get("models").toString();
 				String makeItem = makeList.get("name").toString();
 				
-				Intent secondActivity = new Intent(view.getContext(), SecondActivity.class);
-				secondActivity.putExtra("MAKE_KEY", makeItem);
-				secondActivity.putExtra("MODELS_KEY", modelsItem);
-				startActivityForResult(secondActivity, 0);
 				
-				//parentActivity.startSecondActivity(makeItem, modelsItem);
+				parentActivity.onListItemClicked(makeItem, modelsItem);
 			}
 		});
 	}

@@ -21,17 +21,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
-import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements MainActivityFragment.onListItemClicked {
+public class MainActivity extends Activity implements MainActivityFragment.OnListItemClicked {
 	Context mContext;
 	JSONstorage storage;
 	public ArrayList<HashMap<String, Object>> makeList = new ArrayList<HashMap<String, Object>>();
@@ -150,7 +143,7 @@ public class MainActivity extends Activity implements MainActivityFragment.onLis
 		Intent secondActivity = new Intent(mContext, SecondActivity.class);
 		secondActivity.putExtra("MAKE_KEY", makeItem);
 		secondActivity.putExtra("MODELS_KEY", modelsItem);
-		startActivityForResult(secondActivity, 0);
+		startActivity(secondActivity);
 	}
 	/*
 	//Save User Input and Last Searched
@@ -187,8 +180,39 @@ public class MainActivity extends Activity implements MainActivityFragment.onLis
 		}
 		return connect;
 	}
+
+	@Override
+	public void onListItemClicked(String makeItem, String modelsItem) {
+		// TODO Auto-generated method stub
+
+		SecondActivityFragment fragment2 = (SecondActivityFragment)getFragmentManager().findFragmentById(R.id.second_fragment);
+		if(fragment2 != null && fragment2.isInLayout()){
+			ArrayList<String> modelList = new ArrayList<String>();
+			try {
+				//Parse Selected Object
+				JSONArray jsonArray = new JSONArray(modelsItem);
+				for(int i=0; i< jsonArray.length(); i++){
+					JSONObject modelsObj = jsonArray.getJSONObject(i);
+					String modelName = modelsObj.getString("name");
+					
+					String tempString = new String(makeItem + " " + modelName);
+					
+					modelList.add(tempString);
+				}
+				
+				fragment2.displayModels(modelList);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				Log.i("MODELS_RESULTS", e.getMessage().toString());
+				e.printStackTrace();
+			}
+		}else
+		{
+			startSecondActivity(makeItem, modelsItem);
+		}
+	}
 	
-	//Return Data from Second Activity
+	/*//Return Data from Second Activity
 	@Override
 	protected void onActivityResult(int requestCode, int resultsCode, Intent data){
 		if(resultsCode == RESULT_OK && requestCode == 0){
@@ -199,7 +223,7 @@ public class MainActivity extends Activity implements MainActivityFragment.onLis
 				Toast.makeText(mContext, "Previously Selected: " + model, Toast.LENGTH_LONG).show();
 			}
 		}
-	}
+	}*/
 }
 
 
