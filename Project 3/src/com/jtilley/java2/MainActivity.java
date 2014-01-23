@@ -46,18 +46,7 @@ public class MainActivity extends Activity implements MainActivityFragment.onLis
 		
 		setContentView(R.layout.main_fragment);
 		mContext = this;
-		/*searchField = (TextView) this.findViewById(R.id.search);
-		final Button filterButton = (Button) this.findViewById(R.id.filter);
-		final Button queryButton = (Button) this.findViewById(R.id.query);
-		
-		
-		
-		//Create ListView Headers
-		list = (ListView) this.findViewById(R.id.list);
-		View listHeader = this.getLayoutInflater().inflate(R.layout.list_header, null);
-		list.addHeaderView(listHeader);
-		list.setTextFilterEnabled(true);*/
-		
+	
 		
 		final Handler carsHandler = new Handler(){
 			@Override
@@ -95,6 +84,8 @@ public class MainActivity extends Activity implements MainActivityFragment.onLis
 			if(JSONString.length() > 0){
 				//Not Connected to Network and JSON Saved to Device
 				Toast.makeText(mContext, "Not Connected to a Network. Displaying previous data!", Toast.LENGTH_LONG).show();
+				MainActivityFragment fragment = (MainActivityFragment) getFragmentManager().findFragmentById(R.id.main_fragment);
+				fragment.displayCars(getJSONCars(JSONString));
 				
 				getJSONCars(JSONString);
 			}else{
@@ -103,31 +94,6 @@ public class MainActivity extends Activity implements MainActivityFragment.onLis
 			}
 		}
 	
-		/*
-		//Filter ListView from User Input
-		filterButton.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				String searchInput = searchField.getText().toString();
-				savedString = searchInput;
-				list.setFilterText(searchInput);
-			}
-		});
-		
-		//Display All Data in ListView
-		queryButton.setOnClickListener(new OnClickListener() {
-			
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				list.clearTextFilter();
-				savedString = null;
-				storage = JSONstorage.getInstance();
-				String JSONString = storage.readStringFile(mContext, "cars_json");
-				getJSONCars(JSONString);
-			}
-		})*/
-		
 ;	}
 
 	@Override
@@ -169,36 +135,8 @@ public class MainActivity extends Activity implements MainActivityFragment.onLis
 					makeList.add(makeMap);
 				}
 				
-				
-				/*
-				//Add JSON Data to ListView
-				SimpleAdapter listAdapter = new SimpleAdapter(this, makeList, R.layout.list_row,
-						new String[] {"name", "count"}, new int[] {R.id.makes, R.id.models});
-				list.setAdapter(listAdapter);
-				
-				//Select Item and Send Data to Second Activity
-				list.setOnItemClickListener(new OnItemClickListener() {
-					@SuppressWarnings("unchecked")
-					public void onItemClick(AdapterView<?> makeListItem, View view, int position, long row){
-						HashMap<String, Object> makeList = (HashMap<String, Object>)makeListItem.getItemAtPosition(position);
-						String modelsItem = makeList.get("models").toString();
-						String makeItem = makeList.get("name").toString();
-						
-						startSecondActivity(makeItem, modelsItem);
-						
-						Intent secondActivity = new Intent(mContext, SecondActivity.class);
-						secondActivity.putExtra("MAKE_KEY", makeItem);
-						secondActivity.putExtra("MODELS_KEY", modelsItem);
-						startActivityForResult(secondActivity, 0);
-						
-					}
-				});
-				
-				//Check for SavedInstanceState
-				if(savedString != null){
-					list.setFilterText(savedString);
-				}*/
-				
+				MainActivityFragment fragment = (MainActivityFragment) getFragmentManager().findFragmentById(R.id.main_fragment);
+				fragment.displayCars(makeList);
 				
 			}catch (JSONException e){
 				e.printStackTrace();
@@ -256,6 +194,7 @@ public class MainActivity extends Activity implements MainActivityFragment.onLis
 		if(resultsCode == RESULT_OK && requestCode == 0){
 			Bundle result = data.getExtras();
 			String model = result.getString("model");
+			
 			if(model != null){
 				Toast.makeText(mContext, "Previously Selected: " + model, Toast.LENGTH_LONG).show();
 			}
