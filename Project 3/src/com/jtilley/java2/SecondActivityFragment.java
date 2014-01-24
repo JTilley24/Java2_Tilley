@@ -1,4 +1,7 @@
 package com.jtilley.java2;
+//Justin Tilley 
+//Java 2
+//Project 3
 
 import java.util.ArrayList;
 
@@ -23,6 +26,7 @@ public class SecondActivityFragment extends Fragment {
 	
 	public interface onModelSelected{
 		public void googleSearch(String modelURL);
+		public Boolean isLandscape();
 	}
 	
 	private onModelSelected parentActivity;
@@ -55,9 +59,11 @@ public class SecondActivityFragment extends Fragment {
 		return view;
 	}
 
+	//Display Models in ListView
 	public void displayModels(ArrayList<String> modelList){
 		ArrayAdapter<String> modelsListAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, modelList);
 		
+		//Display ListView When Data is Received
 		selectMake.setVisibility(View.GONE);
 		modelView.setVisibility(View.VISIBLE);
 		
@@ -72,18 +78,13 @@ public class SecondActivityFragment extends Fragment {
 				String model = modelListItem.getItemAtPosition(position).toString();
 				String modelURL = model.replaceAll(" ", "+");
 				Log.i("SELECTED", modelURL);
-				if(parentActivity != null){
-					parentActivity.googleSearch(model.toString());
-				}else{
+				if(parentActivity.isLandscape() == true){
 					Intent google = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/#q=" + modelURL));
 					startActivity(google);
-				}
-				
-			}
-			
-			
+				}else{
+					parentActivity.googleSearch(model.toString());
+				}	
+			}	
 		});
-	}
-	
-	
+	}	
 }

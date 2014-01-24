@@ -1,7 +1,7 @@
 package com.jtilley.java2;
 //Justin Tilley 
 //Java 2
-//Project 2
+//Project 3
 
 
 import java.io.BufferedInputStream;

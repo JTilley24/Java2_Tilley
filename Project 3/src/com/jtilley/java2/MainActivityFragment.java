@@ -1,4 +1,7 @@
 package com.jtilley.java2;
+//Justin Tilley 
+//Java 2
+//Project 3
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,6 +9,7 @@ import java.util.HashMap;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +27,7 @@ public class MainActivityFragment extends Fragment{
 	TextView searchField;
 	Button filterButton;
 	Button queryButton;
+	public Bundle savedInstanceState;
 	public String savedString;
 	public String JSONString;
 	public ArrayList<HashMap<String, Object>> makeList;
@@ -55,8 +60,7 @@ public class MainActivityFragment extends Fragment{
 		// TODO Auto-generated method stub
 		final View view = inflater.inflate(R.layout.activity_main, container);
 		
-		
-
+		//Create UI Elements
 		searchField = (TextView) view.findViewById(R.id.search);
 		filterButton = (Button) view.findViewById(R.id.filter);
 		queryButton = (Button) view.findViewById(R.id.query);
@@ -66,7 +70,15 @@ public class MainActivityFragment extends Fragment{
 		View listHeader = inflater.inflate(R.layout.list_header, null);
 		list.addHeaderView(listHeader);
 		list.setTextFilterEnabled(true);
-				
+		
+		//Retain Data During Change
+		if(savedInstanceState != null){
+			String input = savedInstanceState.getString("input");
+			savedString = savedInstanceState.getString("saved");
+			searchField.setText(input);
+		
+			Log.i("MAIN", "Restoring Saved State");
+		}		
 		
 		//Filter ListView from User Input
 		filterButton.setOnClickListener(new OnClickListener() {
@@ -76,28 +88,25 @@ public class MainActivityFragment extends Fragment{
 				final String searchInput = searchField.getText().toString();
 				savedString = searchInput;
 				list.setFilterText(searchInput);
-						
-				
 			}
 		});
 		
 		
 		//Display All Data in ListView
-			queryButton.setOnClickListener(new OnClickListener() {
+		queryButton.setOnClickListener(new OnClickListener() {
 				
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					list.clearTextFilter();
-					savedString = null;
-				}
-			});
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				list.clearTextFilter();
+				savedString = null;
+			}
+		});
 		
 		return view;
 		
 	}
 	
-	
-	
+	//Display ListView of Makes
 	public void displayCars(ArrayList<HashMap<String, Object>> makeList){
 		
 		//Add JSON Data to ListView
@@ -113,10 +122,24 @@ public class MainActivityFragment extends Fragment{
 				String modelsItem = makeList.get("models").toString();
 				String makeItem = makeList.get("name").toString();
 				
-				
 				parentActivity.onListItemClicked(makeItem, modelsItem);
 			}
 		});
+		
+		if(savedString != null){
+			list.setFilterText(savedString);
+		}
+		
 	}
-
+	//Save User Input and Last Searched
+		public void onSaveInstanceState(Bundle outState){
+			super.onSaveInstanceState(outState);
+			String inputString = (String) searchField.getText().toString();
+			outState.putString("input", inputString);
+			if(savedString != null){
+				outState.putString("saved", savedString);
+			}
+			Log.i("MAIN", "Saving Instance State");
+		
+		}
 }

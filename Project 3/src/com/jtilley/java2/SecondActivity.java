@@ -1,7 +1,7 @@
 package com.jtilley.java2;
 //Justin Tilley 
 //Java 2
-//Project 2
+//Project 3
 
 import java.util.ArrayList;
 
@@ -16,12 +16,10 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.util.Log;
 import android.view.Menu;
-import android.widget.ListView;
 
 public class SecondActivity extends Activity implements SecondActivityFragment.onModelSelected {
 	public String make;
 	public String model;
-	ListView modelView;
 	ArrayList<String> modelList = new ArrayList<String>();
 	
 	@Override
@@ -29,17 +27,18 @@ public class SecondActivity extends Activity implements SecondActivityFragment.o
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.second_fragment);
 		
-		if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+		//Check For Landscape
+		if(isLandscape() == true)
 		{
 			finish();
 		}
 		
-			//Retrieve Data sent from Main Activity
-			Intent intent = this.getIntent();
-			make = intent.getStringExtra("MAKE_KEY");
-			String models = intent.getStringExtra("MODELS_KEY").toString();
+		//Retrieve Data sent from Main Activity
+		Intent intent = this.getIntent();
+		make = intent.getStringExtra("MAKE_KEY");
+		String models = intent.getStringExtra("MODELS_KEY").toString();
 			
-			getModels(models);
+		getModels(models);
 		
 		
 	}
@@ -51,8 +50,8 @@ public class SecondActivity extends Activity implements SecondActivityFragment.o
 		return true;
 	}
 
+	//Parse JSON and Send to Fragment
 	public void getModels(String modelsJSON){
-		
 		try {
 			//Parse Selected Object
 			JSONArray jsonArray = new JSONArray(modelsJSON);
@@ -67,28 +66,7 @@ public class SecondActivity extends Activity implements SecondActivityFragment.o
 			
 			SecondActivityFragment fragment2 = (SecondActivityFragment)getFragmentManager().findFragmentById(R.id.second_fragment);
 			fragment2.displayModels(modelList);
-			
-			/*ArrayAdapter<String> modelsListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, modelList);
-			
-			modelView.setAdapter(modelsListAdapter);
-			
-			modelView.setOnItemClickListener(new OnItemClickListener() {
-				//Open Google Search for Selected Item
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view,
-						int position, long id) {
-					// TODO Auto-generated method stub
-					model = modelList.get(position).toString();
-					String modelURL = model.replaceAll(" ", "+");
-					Log.i("SELECTED", modelURL);
-					Intent google = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/#q=" + modelURL));
-					startActivity(google);
-					
-				}
-				
-				
-			});*/
-			
+		
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			Log.i("MODELS_RESULTS", e.getMessage().toString());
@@ -96,17 +74,31 @@ public class SecondActivity extends Activity implements SecondActivityFragment.o
 		}
 	}
 	
+	//Open Google Search for Selected Model
 	public void googleSearch(String modelURL){
+		model = modelURL;
 		Intent google = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/#q=" + modelURL));
 		startActivity(google);
+		
+	}
+	
+	public Boolean isLandscape(){
+		boolean result = false;
+		
+		if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+		{
+			result = true;
+		}
+		
+		return result;
 	}
 	
 	//Sent Previous Selection back to Main Activity
-	/*@Override
+	@Override
 	public void finish(){
 		Intent data = new Intent();
 		data.putExtra("model", model);
 		setResult(RESULT_OK, data);
 		super.finish();
-	}*/
+	}
 }

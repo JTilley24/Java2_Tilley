@@ -1,7 +1,7 @@
 package com.jtilley.java2;
 //Justin Tilley 
 //Java 2
-//Project 2
+//Project 3
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements MainActivityFragment.OnListItemClicked,SecondActivityFragment.onModelSelected {
@@ -29,9 +28,6 @@ public class MainActivity extends Activity implements MainActivityFragment.OnLis
 	JSONstorage storage;
 	public ArrayList<HashMap<String, Object>> makeList = new ArrayList<HashMap<String, Object>>();
 	public String urlString = "https://api.edmunds.com/api/vehicle/v2/makes?state=new&year=2014&view=full&fmt=json&api_key=saw2xy7wdxjqfueuxkv5hm8w";
-	public SimpleAdapter listAdapter;
-	public Bundle savedInstanceState;
-	public String savedString;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +92,7 @@ public class MainActivity extends Activity implements MainActivityFragment.OnLis
 		return true;
 	}
 	
+	//Parse JSON and Send to Fragment
 	public ArrayList<HashMap<String, Object>> getJSONCars(String JSONString)
 	{
 			JSONObject jObject = null;
@@ -137,37 +134,14 @@ public class MainActivity extends Activity implements MainActivityFragment.OnLis
 			return makeList;
 	}
 	
-	
-	
+	//Display Second Activity
 	public void startSecondActivity(String makeItem, String modelsItem){
 		Intent secondActivity = new Intent(mContext, SecondActivity.class);
 		secondActivity.putExtra("MAKE_KEY", makeItem);
 		secondActivity.putExtra("MODELS_KEY", modelsItem);
-		startActivity(secondActivity);
-	}
-	/*
-	//Save User Input and Last Searched
-	protected void onSaveInstanceState(Bundle outState){
-		super.onSaveInstanceState(outState);
-		String inputString = (String) searchField.getText().toString();
-		outState.putString("input", inputString);
-		if(savedString != null){
-			outState.putString("saved", savedString);
-		}
-		Log.i("MAIN", "Saving Instance State");
-	
+		startActivityForResult(secondActivity, 0);
 	}
 	
-	//Restore the SavedInstanceState and Display User's Previous Input
-	public void onRestoreInstanceState(Bundle savedInstanceState){
-		super.onRestoreInstanceState(savedInstanceState);
-		String input = savedInstanceState.getString("input");
-		savedString = savedInstanceState.getString("saved");
-		searchField.setText(input);
-		
-		Log.i("MAIN", "Restoring Saved State");
-	}
-	*/
 	public Boolean checkConnection(Context context){
 		Boolean connect = false;
 		ConnectivityManager cManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -184,8 +158,10 @@ public class MainActivity extends Activity implements MainActivityFragment.OnLis
 	@Override
 	public void onListItemClicked(String makeItem, String modelsItem) {
 		// TODO Auto-generated method stub
-
+		
 		SecondActivityFragment fragment2 = (SecondActivityFragment)getFragmentManager().findFragmentById(R.id.second_fragment);
+		
+		//Check for Landscape Orientation
 		if(fragment2 != null && fragment2.isInLayout()){
 			ArrayList<String> modelList = new ArrayList<String>();
 			try {
@@ -212,13 +188,7 @@ public class MainActivity extends Activity implements MainActivityFragment.OnLis
 		}
 	}
 
-	@Override
-	public void googleSearch(String modelURL) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	/*//Return Data from Second Activity
+	//Return Data from Second Activity
 	@Override
 	protected void onActivityResult(int requestCode, int resultsCode, Intent data){
 		if(resultsCode == RESULT_OK && requestCode == 0){
@@ -229,7 +199,19 @@ public class MainActivity extends Activity implements MainActivityFragment.OnLis
 				Toast.makeText(mContext, "Previously Selected: " + model, Toast.LENGTH_LONG).show();
 			}
 		}
-	}*/
+	}
+	
+	@Override
+	public void googleSearch(String modelURL) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Boolean isLandscape() {
+		// TODO Auto-generated method stub
+		return true;
+	}
 }
 
 
