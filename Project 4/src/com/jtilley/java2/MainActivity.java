@@ -17,10 +17,17 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements MainActivityFragment.OnListItemClicked,SecondActivityFragment.onModelSelected {
@@ -201,6 +208,11 @@ public class MainActivity extends Activity implements MainActivityFragment.OnLis
 		}
 	}
 	
+	public void showDialog(){
+		DialogFragment filterFragment = FilterDialog.newInstance();
+		filterFragment.show(getFragmentManager(), "filter");
+	}
+	
 	@Override
 	public void googleSearch(String modelURL) {
 		// TODO Auto-generated method stub
@@ -211,6 +223,56 @@ public class MainActivity extends Activity implements MainActivityFragment.OnLis
 	public Boolean isLandscape() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+	public static class FilterDialog extends DialogFragment{
+		EditText textField;
+		Button sendButton;
+		Button cancelButton;
+		
+		static FilterDialog newInstance(){
+			return new FilterDialog();
+		}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+			View view = inflater.inflate(R.layout.dialog_fragment, container);
+			getDialog().setTitle("Please enter make of vehicle.");
+			textField = (EditText) view.findViewById(R.id.searchField);
+			sendButton = (Button) view.findViewById(R.id.sendButton);
+			cancelButton = (Button) view.findViewById(R.id.cancelButton);
+			
+			sendButton.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					String tempString = textField.getText().toString();
+					if(tempString.length() != 0){
+						MainActivityFragment fragment1 = (MainActivityFragment)getFragmentManager().findFragmentById(R.id.main_fragment);
+						fragment1.filterList(tempString);
+						dismiss();
+					}else{
+						Toast.makeText(getActivity(), "Not a Valid Input!", Toast.LENGTH_LONG).show();
+					}
+					
+					
+				}
+			});
+			
+			cancelButton.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					dismiss();
+				}
+			});
+			
+			return view;
+		}
+		
+		
 	}
 }
 

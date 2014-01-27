@@ -18,17 +18,16 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class MainActivityFragment extends Fragment{
 
 	ListView list;
-	TextView searchField;
 	Button filterButton;
 	Button queryButton;
 	public Bundle savedInstanceState;
 	public String savedString;
+	public String filterString;
 	public String JSONString;
 	public ArrayList<HashMap<String, Object>> makeList;
 	SimpleAdapter listAdapter;
@@ -36,6 +35,7 @@ public class MainActivityFragment extends Fragment{
 	public interface OnListItemClicked{
 		void onListItemClicked(String makeItem, String modelsItem);
 		ArrayList<HashMap<String, Object>> getJSONCars(String JSONString);
+		void showDialog();
 	}
 	
 	private OnListItemClicked parentActivity;
@@ -60,8 +60,6 @@ public class MainActivityFragment extends Fragment{
 		// TODO Auto-generated method stub
 		final View view = inflater.inflate(R.layout.activity_main, container);
 		
-		//Create UI Elements
-		searchField = (TextView) view.findViewById(R.id.search);
 		filterButton = (Button) view.findViewById(R.id.filter);
 		queryButton = (Button) view.findViewById(R.id.query);
 		
@@ -73,10 +71,8 @@ public class MainActivityFragment extends Fragment{
 		
 		//Retain Data During Change
 		if(savedInstanceState != null){
-			String input = savedInstanceState.getString("input");
 			savedString = savedInstanceState.getString("saved");
-			searchField.setText(input);
-		
+			
 			Log.i("MAIN", "Restoring Saved State");
 		}		
 		
@@ -85,9 +81,7 @@ public class MainActivityFragment extends Fragment{
 					
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				final String searchInput = searchField.getText().toString();
-				savedString = searchInput;
-				list.setFilterText(searchInput);
+				parentActivity.showDialog();
 			}
 		});
 		
@@ -134,12 +128,15 @@ public class MainActivityFragment extends Fragment{
 	//Save User Input and Last Searched
 		public void onSaveInstanceState(Bundle outState){
 			super.onSaveInstanceState(outState);
-			String inputString = (String) searchField.getText().toString();
-			outState.putString("input", inputString);
-			if(savedString != null){
-				outState.putString("saved", savedString);
+			if(filterString != null){
+				outState.putString("saved", filterString);
 			}
 			Log.i("MAIN", "Saving Instance State");
 		
+		}
+		
+		public void filterList(String inputString){
+			filterString = inputString;
+			list.setFilterText(inputString);
 		}
 }

@@ -18,22 +18,7 @@
 	    android:textSize="20sp"
 	    android:textStyle="bold"
 	    />
-	<TextView 
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:text="@string/input"
-	    android:gravity="left"
-	    android:textSize="12sp"
-	    android:textStyle="bold"
-	    android:textColor="#C0C0C0"
-	    />
-    <EditText
-        android:id="@+id/search"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        />
-    <Button
+	<Button
         android:id="@+id/query"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
