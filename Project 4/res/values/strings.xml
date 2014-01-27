@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Java2</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_second">SecondActivity</string>
+    <string name="make_header">Make</string>
+    <string name="models_header">Models Count</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="queryButton">Query All</string>
+    <string name="filterButton">Filter Results</string>
+    <string name="title">New Car Listings</string>
+    <string name="input">Enter Make of Vehicle</string>
+    <string name="second">Select Available Models</string>
+    <string name="select">No Data. Select Make to Display Models</string>
+
+</resources>
