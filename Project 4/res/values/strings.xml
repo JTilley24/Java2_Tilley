@@ -14,5 +14,6 @@
     <string name="select">No Data. Select Make to Display Models</string>
     <string name="send">Send</string>
     <string name="cancel">Cancel</string>
-
+	<string name="save">Save</string>
+    
 </resources>

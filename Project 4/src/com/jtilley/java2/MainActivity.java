@@ -4,6 +4,7 @@ package com.jtilley.java2;
 //Project 3
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import org.json.JSONArray;

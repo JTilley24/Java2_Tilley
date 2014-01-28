@@ -31,16 +31,18 @@ public final class R {
         public static final int icon=0x7f020004;
     }
     public static final class id {
-        public static final int action_settings=0x7f09000d;
+        public static final int action_settings=0x7f09000f;
         public static final int cancelButton=0x7f090007;
         public static final int filter=0x7f090001;
         public static final int list=0x7f090002;
         public static final int main_fragment=0x7f09000b;
         public static final int makes=0x7f09000a;
         public static final int makes_header=0x7f090008;
+        public static final int modelName=0x7f09000d;
         public static final int models=0x7f090004;
         public static final int models_header=0x7f090009;
         public static final int query=0x7f090000;
+        public static final int saveButton=0x7f09000e;
         public static final int searchField=0x7f090005;
         public static final int second_fragment=0x7f09000c;
         public static final int select=0x7f090003;
@@ -53,7 +55,8 @@ public final class R {
         public static final int list_header=0x7f030003;
         public static final int list_row=0x7f030004;
         public static final int main_fragment=0x7f030005;
-        public static final int second_fragment=0x7f030006;
+        public static final int mlist_item=0x7f030006;
+        public static final int second_fragment=0x7f030007;
     }
     public static final class menu {
         public static final int main=0x7f080000;
@@ -68,6 +71,7 @@ public final class R {
         public static final int make_header=0x7f060003;
         public static final int models_header=0x7f060004;
         public static final int queryButton=0x7f060006;
+        public static final int save=0x7f06000d;
         public static final int second=0x7f060009;
         public static final int select=0x7f06000a;
         public static final int send=0x7f06000b;

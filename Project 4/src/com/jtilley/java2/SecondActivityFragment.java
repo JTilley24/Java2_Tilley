@@ -61,13 +61,14 @@ public class SecondActivityFragment extends Fragment {
 
 	//Display Models in ListView
 	public void displayModels(ArrayList<String> modelList){
-		ArrayAdapter<String> modelsListAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, modelList);
+		//ArrayAdapter<String> modelsListAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, modelList);
+		ModelListAdapter adapter = new ModelListAdapter(getActivity(), modelList);
 		
 		//Display ListView When Data is Received
 		selectMake.setVisibility(View.GONE);
 		modelView.setVisibility(View.VISIBLE);
 		
-		modelView.setAdapter(modelsListAdapter);
+		modelView.setAdapter(adapter);
 		
 		modelView.setOnItemClickListener(new OnItemClickListener() {
 			//Open Google Search for Selected Item

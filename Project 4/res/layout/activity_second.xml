@@ -39,6 +39,4 @@
         android:dividerHeight="3dp"
         android:drawSelectorOnTop="false"
         />
-   
-
 </LinearLayout>
