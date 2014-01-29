@@ -1,7 +1,7 @@
 package com.jtilley.java2;
 //Justin Tilley 
 //Java 2
-//Project 3
+//Project 4
 
 import java.util.ArrayList;
 
@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;

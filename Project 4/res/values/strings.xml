@@ -14,6 +14,10 @@
     <string name="select">No Data. Select Make to Display Models</string>
     <string name="send">Send</string>
     <string name="cancel">Cancel</string>
-	<string name="save">Save</string>
-    
+    <string name="save">Save</string>
+    <string name="title_activity_saved">SavedActivity</string>
+    <string name ="savedButton">Saved Vehicles</string>
+    <string name="ok">OK</string>
+	<string name="no_saved">No Saved Vehicles!</string>
+	
 </resources>

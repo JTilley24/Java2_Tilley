@@ -18,27 +18,48 @@
 	    android:textSize="20sp"
 	    android:textStyle="bold"
 	    />
-	<Button
-        android:id="@+id/query"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/queryButton"
-        android:layout_gravity="center"
-        android:textColor="#FFFFFF"
-		android:textSize="14sp"
-        android:background="@drawable/green_button"
-        />
-    
-    <Button 
-        android:id="@+id/filter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/filterButton"
-        android:layout_gravity="center"
-        android:textColor="#FFFFFF"
-		android:textSize="14sp"
-        android:background="@drawable/blue_button"
-        />
+	<LinearLayout
+	    android:id="@+id/buttonLayout"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal">
+		
+		<Button
+	        android:id="@+id/savedButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/savedButton"
+	        android:layout_weight="1"
+	        android:layout_gravity="center"
+	        android:textColor="#000000"
+			android:textSize="14sp"
+	        android:background="@drawable/yellow_button"
+	        />
+		
+		<Button
+	        android:id="@+id/query"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/queryButton"
+	        android:layout_gravity="center"
+	        android:layout_weight="1"
+	        android:textColor="#FFFFFF"
+			android:textSize="14sp"
+	        android:background="@drawable/green_button"
+	        />
+	    
+	    <Button 
+	        android:id="@+id/filter"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/filterButton"
+	        android:layout_gravity="center"
+	        android:layout_weight="1"
+	        android:textColor="#FFFFFF"
+			android:textSize="14sp"
+	        android:background="@drawable/blue_button"
+	        />
+    </LinearLayout>
     
     <ListView
         android:id="@+id/list"

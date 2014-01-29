@@ -39,6 +39,10 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.jtilley.java2.SavedActivity"
+            android:label="@string/title_activity_saved" >
+        </activity>
     </application>
 
 </manifest>

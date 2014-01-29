@@ -1,7 +1,7 @@
 package com.jtilley.java2;
 //Justin Tilley 
 //Java 2
-//Project 3
+//Project 4
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +25,7 @@ public class MainActivityFragment extends Fragment{
 	ListView list;
 	Button filterButton;
 	Button queryButton;
+	Button savedButton;
 	public Bundle savedInstanceState;
 	public String savedString;
 	public String filterString;
@@ -36,6 +37,7 @@ public class MainActivityFragment extends Fragment{
 		void onListItemClicked(String makeItem, String modelsItem);
 		ArrayList<HashMap<String, Object>> getJSONCars(String JSONString);
 		void showDialog();
+		void startSavedActivity();
 	}
 	
 	private OnListItemClicked parentActivity;
@@ -62,6 +64,7 @@ public class MainActivityFragment extends Fragment{
 		
 		filterButton = (Button) view.findViewById(R.id.filter);
 		queryButton = (Button) view.findViewById(R.id.query);
+		savedButton = (Button) view.findViewById(R.id.savedButton);
 		
 		//Create ListView Headers
 		list = (ListView) view.findViewById(R.id.list);
@@ -93,6 +96,14 @@ public class MainActivityFragment extends Fragment{
 				// TODO Auto-generated method stub
 				list.clearTextFilter();
 				savedString = null;
+			}
+		});
+		
+		savedButton.setOnClickListener(new OnClickListener() {
+			
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				parentActivity.startSavedActivity();
 			}
 		});
 		

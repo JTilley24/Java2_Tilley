@@ -1,10 +1,9 @@
 package com.jtilley.java2;
 //Justin Tilley 
 //Java 2
-//Project 3
+//Project 4
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import org.json.JSONArray;
@@ -148,6 +147,11 @@ public class MainActivity extends Activity implements MainActivityFragment.OnLis
 		secondActivity.putExtra("MAKE_KEY", makeItem);
 		secondActivity.putExtra("MODELS_KEY", modelsItem);
 		startActivityForResult(secondActivity, 0);
+	}
+	
+	public void startSavedActivity(){
+		Intent savedActivity = new Intent(mContext, SavedActivity.class);
+		startActivity(savedActivity);
 	}
 	
 	public Boolean checkConnection(Context context){

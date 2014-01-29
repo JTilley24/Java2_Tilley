@@ -1,10 +1,10 @@
 package com.jtilley.java2;
+//Justin Tilley 
+//Java 2
+//Project 4
 
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ModelListAdapter extends BaseAdapter {
 	Context context;
@@ -59,9 +60,9 @@ public class ModelListAdapter extends BaseAdapter {
 				// TODO Auto-generated method stub
 				//MainActivity main = new MainActivity();
 				if(saveModel(modelName) == true){
-					Log.i("SAVED", "Model Saved!");
+					Toast.makeText(context, "Selection was saved!", Toast.LENGTH_SHORT).show();
 				}else{
-					Log.i("SAVED", "Model Not Saved!");
+					Toast.makeText(context, "Selection is already saved!", Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
@@ -72,22 +73,22 @@ public class ModelListAdapter extends BaseAdapter {
 	public Boolean saveModel(String model){
 		JSONstorage storage = JSONstorage.getInstance();
 		String savedString = storage.readStringFile(context, "saved_models");
-		ArrayList<String> savedModels = new ArrayList<String>(Arrays.asList(savedString.split(" , ")));
 		
-		if(savedString.length() > 0){
-			if(savedModels.contains(model) == true){
+		if(savedString != ""){
+			if(savedString.contains(model) == true){
 				return false;
+			}else{
+			StringBuilder builder = new StringBuilder();
+			builder.append(savedString);
+			builder.append(",");
+			builder.append(model);
+			storage.writeStringFile(context, "saved_models", builder.toString());
 			}
-			savedModels.add(model);
-			
-			storage.writeStringFile(context, "saved_models", savedModels.toString());
 		}else{
-			savedModel.add(model);
-			storage.writeStringFile(context, "saved_models", savedModel.toString());
+			storage.writeStringFile(context, "saved_models", model);
 		}
-		
-		
 		
 		return true;
 	}
+
 }
