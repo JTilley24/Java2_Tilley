@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -28,21 +27,19 @@ public class SavedActivity extends Activity {
 	Context context;
 	ArrayList<String> models = new ArrayList<String>();
 	
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_saved);
 		context = this;
+		
 		savedList = (ListView) findViewById(R.id.saved);
 		noSaved = (TextView)findViewById(R.id.nosave);
-		
-		
-		
-		displaySaved();
-		
+	
+		displaySaved();	
 	}
 	
+	//Display Saved Vehicles in ListView
 	public void displaySaved(){
 		noSaved.setVisibility(View.GONE);
 		savedList.setVisibility(View.VISIBLE);
@@ -51,7 +48,6 @@ public class SavedActivity extends Activity {
 		String savedString = storage.readStringFile(this, "saved_models");
 		if(savedString != ""){
 			models = new ArrayList<String>(Arrays.asList(savedString.split(",")));
-			Log.i("MODELS", models.toString());
 			
 			ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, models);;
 			
@@ -74,22 +70,17 @@ public class SavedActivity extends Activity {
 			savedList.setVisibility(View.GONE);
 		}
 	}
-
+	
+	//Remove a Selected Vehicle from the list and Save changed list
 	public void removeItem(int position){
 		models.remove(position);
 		String modelString;
 		
-		Log.i("MODELS", models.toString());
-		
 		if(models != null){
 			modelString = models.toString().replace("[", "");
 			modelString = modelString.replace("]", "");
-			Log.i("MODELS", modelString);
-			
-			
 		}else{
 			modelString = "";
-			Log.i("MODELS", modelString);
 		}
 		
 		JSONstorage storage = JSONstorage.getInstance();
@@ -106,6 +97,7 @@ public class SavedActivity extends Activity {
 		return true;
 	}
 
+	//Dialog to Confirm Delete
 	public static class SavedDialog extends DialogFragment{
 		Button okButton;
 		Button cancelButton;
@@ -131,6 +123,7 @@ public class SavedActivity extends Activity {
 			okButton = (Button) view.findViewById(R.id.okButton);
 			cancelButton = (Button) view.findViewById(R.id.cancelButton);
 			
+			//Delete is Confirmed
 			okButton.setOnClickListener(new OnClickListener() {
 				
 				@Override
@@ -142,6 +135,7 @@ public class SavedActivity extends Activity {
 				}
 			});
 			
+			//Delete is Canceled
 			cancelButton.setOnClickListener(new OnClickListener() {
 				
 				@Override
@@ -153,6 +147,5 @@ public class SavedActivity extends Activity {
 			
 			return view;
 		}
-	
 	}
 }

@@ -149,6 +149,7 @@ public class MainActivity extends Activity implements MainActivityFragment.OnLis
 		startActivityForResult(secondActivity, 0);
 	}
 	
+	//Display Activity for Saved Vehicles
 	public void startSavedActivity(){
 		Intent savedActivity = new Intent(mContext, SavedActivity.class);
 		startActivity(savedActivity);
@@ -229,6 +230,8 @@ public class MainActivity extends Activity implements MainActivityFragment.OnLis
 		// TODO Auto-generated method stub
 		return true;
 	}
+	
+	//Dialog for Search Input
 	public static class FilterDialog extends DialogFragment{
 		EditText textField;
 		Button sendButton;
@@ -243,6 +246,7 @@ public class MainActivity extends Activity implements MainActivityFragment.OnLis
 				Bundle savedInstanceState) {
 			View view = inflater.inflate(R.layout.dialog_fragment, container);
 			getDialog().setTitle("Please enter make of vehicle.");
+			
 			textField = (EditText) view.findViewById(R.id.searchField);
 			sendButton = (Button) view.findViewById(R.id.sendButton);
 			cancelButton = (Button) view.findViewById(R.id.cancelButton);
@@ -259,9 +263,7 @@ public class MainActivity extends Activity implements MainActivityFragment.OnLis
 						dismiss();
 					}else{
 						Toast.makeText(getActivity(), "Not a Valid Input!", Toast.LENGTH_LONG).show();
-					}
-					
-					
+					}	
 				}
 			});
 			
@@ -275,9 +277,7 @@ public class MainActivity extends Activity implements MainActivityFragment.OnLis
 			});
 			
 			return view;
-		}
-		
-		
+		}		
 	}
 }
 

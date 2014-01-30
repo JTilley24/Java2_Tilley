@@ -8,6 +8,8 @@
        android:id="@+id/modelName"
        android:layout_width="wrap_content"
 	   android:layout_height="wrap_content"
+	   android:clickable="false"
+	   android:focusable="false"
 	   android:textSize="20sp"
        />
    <Button
@@ -15,6 +17,7 @@
        android:layout_width="wrap_content"
 	   android:layout_height="wrap_content"
 	   android:text="@string/save"
+	   android:focusable="false"
 	   android:layout_alignParentRight="true"
 	   android:background="#efefef"
 	   />

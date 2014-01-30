@@ -52,6 +52,7 @@ public class ModelListAdapter extends BaseAdapter {
 		TextView modelText = (TextView) view.findViewById(R.id.modelName);
 		modelText.setText(modelName);
 		
+		//Add Button to Save Selection
 		Button saveButton =(Button) view.findViewById(R.id.saveButton);
 		saveButton.setOnClickListener(new OnClickListener() {
 			
@@ -70,6 +71,7 @@ public class ModelListAdapter extends BaseAdapter {
 		return view;
 	}
 
+	//Save Selection as String to Storage
 	public Boolean saveModel(String model){
 		JSONstorage storage = JSONstorage.getInstance();
 		String savedString = storage.readStringFile(context, "saved_models");
@@ -78,11 +80,11 @@ public class ModelListAdapter extends BaseAdapter {
 			if(savedString.contains(model) == true){
 				return false;
 			}else{
-			StringBuilder builder = new StringBuilder();
-			builder.append(savedString);
-			builder.append(",");
-			builder.append(model);
-			storage.writeStringFile(context, "saved_models", builder.toString());
+				StringBuilder builder = new StringBuilder();
+				builder.append(savedString);
+				builder.append(",");
+				builder.append(model);
+				storage.writeStringFile(context, "saved_models", builder.toString());
 			}
 		}else{
 			storage.writeStringFile(context, "saved_models", model);

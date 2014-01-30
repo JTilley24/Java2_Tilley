@@ -39,8 +39,6 @@ public class SecondActivity extends Activity implements SecondActivityFragment.o
 		String models = intent.getStringExtra("MODELS_KEY").toString();
 			
 		getModels(models);
-		
-		
 	}
 
 	@Override

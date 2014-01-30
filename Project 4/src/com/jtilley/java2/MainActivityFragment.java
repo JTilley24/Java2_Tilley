@@ -79,7 +79,7 @@ public class MainActivityFragment extends Fragment{
 			Log.i("MAIN", "Restoring Saved State");
 		}		
 		
-		//Filter ListView from User Input
+		//Filter ListView from User Input in DialogFragment
 		filterButton.setOnClickListener(new OnClickListener() {
 					
 			public void onClick(View v) {
@@ -99,6 +99,7 @@ public class MainActivityFragment extends Fragment{
 			}
 		});
 		
+		//Display Saved Activity
 		savedButton.setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View v) {
@@ -136,7 +137,7 @@ public class MainActivityFragment extends Fragment{
 		}
 		
 	}
-	//Save User Input and Last Searched
+		//Save User Input and Last Searched
 		public void onSaveInstanceState(Bundle outState){
 			super.onSaveInstanceState(outState);
 			if(filterString != null){
@@ -146,6 +147,7 @@ public class MainActivityFragment extends Fragment{
 		
 		}
 		
+		//Method to Filter List
 		public void filterList(String inputString){
 			filterString = inputString;
 			list.setFilterText(inputString);
